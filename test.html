@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test</title>
+</head>
+<body>  
+    <!-- <table>
+    <tr><td>1<td>1</tr>
+    <tr><td>2<td>2</tr>
+    <tr><td>3<td>3</tr>    
+    </table>  -->
+
+    <div id="memoBoard">
+    </div>
+
+    <script>
+
+    let stores=[{"name":"台大清潔分隊","district":"大安區","address":"臺北市大安區辛亥路1段臨138號"},
+                {"name":"和平清潔分隊","district":"大安區","address":"臺北市大安區辛亥路1段臨143號"},
+                {"name":"敦化清潔分隊","district":"大安區","address":"臺北市大安區忠孝東路3段31號"},
+                {"name":"新生清潔分隊","district":"大安區","address":"臺北市大安區建國南路1段臨173號"},
+                {"name":"瑞安清潔分隊","district":"大安區","address":"臺北市大安區建國南路2段臨263號"},
+                {"name":"家樂福大直店","district":"中山區","address":"臺北市中山區樂群三路218號"}   
+                ]
+
+    let rboard=document.getElementById("memoBoard");
+    
+
+    
+    rboard.innerHTML="<table>\r\n";
+    rboard.innerHTML+="<tr><td>1<td>1</tr>\r\n";
+    rboard.innerHTML+="<tr><td>2<td>2</tr>\r\n";
+    rboard.innerHTML+="<tr><td>3<td>3</tr>\r\n";      
+    rboard.innerHTML="</table>";   
+    // rboard.innerHTML="<h1>ok</h1>" 
+
+
+    </script>
+    
+</body>
+</html>

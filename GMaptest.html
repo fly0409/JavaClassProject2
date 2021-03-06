@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        html,body{
+          width: 100%;
+          height: 100%;
+          }
+          #map { width: 40%;height: 60%; }  
+
+      </style>
+    
+
+</head>
+<body>
+    <!-- <div id="allpage" style="width: 80%;"> -->
+                <div id="search">
+                <input type="text" name="search">  <input type="button" onclick="" value="search">          
+                </div>  
+          <div id="map" style="float: left"></div>
+             <div id="memoBoard" style="width:28;">
+                 <!-- <table border="1">
+                <tr><td rowspan="3"><img src="https://www.flaticon.com/premium-icon/icons/svg/2515/2515249.svg" style="width:50px ;"> <td>大安森林公園</tr>
+                <tr><td>大安區</tr>
+                <tr><td>rank:4</tr>
+                </table>    -->
+        </div>
+    <div style="clear: both">
+        <input type="button" onclick="getLocation()" value="test">  
+    </div>
+    <!-- </div> -->
+    
+    <script>    
+  
+    var map;
+
+    
+    let loactions=[ {"name":"大安森林公園","lati":25.0333,"long":121.5358,"district":"大安區","rank":"4","pic":"https://www.flaticon.com/premium-icon/icons/svg/2515/2515249.svg"},
+                    {"name":"師大附中","lati":25.033674 ,"long":121.540411,"district":"大安區","rank":"4","pic":"https://www.flaticon.com/premium-icon/icons/svg/2515/2515183.svg"},
+                    {"name":"成功高中","lati":25.042804,"long":121.523712,"district":"中正區","rank":"4","pic":"https://www.flaticon.com/premium-icon/icons/svg/2276/2276931.svg"},
+                     ];
+
+
+
+    // let stores=[{"name":"台大清潔分隊","district":"大安區","address":"臺北市大安區辛亥路1段臨138號"},
+    //             {"name":"和平清潔分隊","district":"大安區","address":"臺北市大安區辛亥路1段臨143號"},
+    //             {"name":"敦化清潔分隊","district":"大安區","address":"臺北市大安區忠孝東路3段31號"},
+    //             {"name":"新生清潔分隊","district":"大安區","address":"臺北市大安區建國南路1段臨173號"},
+    //             {"name":"瑞安清潔分隊","district":"大安區","address":"臺北市大安區建國南路2段臨263號"},
+    //             {"name":"家樂福大直店","district":"中山區","address":"臺北市中山區樂群三路218號"}   
+    //             ];
+
+    // var addr1 =["台北市政府","木柵動物園","國父紀念館"];
+    // addr1.push("中正紀念堂");
+       
+
+
+
+
+
+    function initMap(){
+        // navigator.geolocation.watchPosition((position) => {
+        // console.log(position.coords);
+        // let lat = position.coords.latitude;
+        // let lng = position.coords.longitude;
+
+        //取得目前位址,需要再用因為要收費...
+
+        // })};
+
+        // var icon = {
+        //     url: "https://www.flaticon.com/premium-icon/icons/svg/931/931572.svg", // url
+        //     scaledSize: new google.maps.Size(50, 50), // scaled size
+        //     origin: new google.maps.Point(0,0), // origin
+        //     anchor: new google.maps.Point(0, 0) // anchor
+        //     };   
+
+
+
+
+        map = new google.maps.Map(document.getElementById('map'), { center: {lat: 25.033710, lng: 121.564718}, zoom: 15});
+        var marker = new google.maps.Marker({position: {lat: 25.033710, lng: 121.564718}, map: map,icon:icon});
+    }
+
+
+    // navigator.geolocation.watchPosition((position) => {
+    //     console.log(position.coords);
+    //     lat = position.coords.latitude;
+    //     lng = position.coords.longitude;
+    //     // 初始化地圖
+    //     map = new google.maps.Map(document.getElementById('map'), {
+    //         zoom: 18,
+    //         center: { lat: lat, lng: lng }
+    //     });
+    
+
+    function getLocation(){
+        //marker pattern
+        var icon2 = {
+            url: "https://www.flaticon.com/premium-icon/icons/svg/819/819814.svg", // url
+            scaledSize: new google.maps.Size(40, 40), // scaled size
+            origin: new google.maps.Point(0,0), // origin
+            anchor: new google.maps.Point(0,0) // anchor
+            };
+
+            var infowindow = new google.maps.InfoWindow();
+            var marker, i;
+            var bounds = new google.maps.LatLngBounds();
+        
+
+
+       
+        let HTMLtable="<table border='1'>";
+        for(let i=0;i<loactions.length;i++){
+            HTMLtable+=
+                 "<tr><td rowspan=\"3\"><img src="+`${loactions[i].pic}`+" style=\"width:50px ;\"> <td>name:"+`${loactions[i].name}`+"</tr>"
+                +"<tr><td>district:"+`${loactions[i].district}`+"</tr>"
+                +"<tr><td>rank:"+`${loactions[i].rank}`+"</tr>" 
+        }
+        HTMLtable+="</table>";
+
+        document.getElementById("memoBoard").innerHTML=HTMLtable;
+
+        //抓location的經緯度
+        for(let i=0;i<loactions.length;i++){
+            console.log(loactions[i].name);
+            var marker = new google.maps.Marker({ 
+                map: map, 
+                position: {lat: loactions[i].lati,lng: loactions[i].long},
+                zoom:15,
+                //icon:icon2,
+                title:loactions[i].name});
+            
+            bounds.extend(marker.getPosition());
+
+            //在每個marker處新增事件
+            google.maps.event.addListener(marker, 'click', (function(marker, i) {
+            return function() {
+                infowindow.setContent(loactions[i].name);
+                infowindow.open(map, marker);
+                }
+            })
+            
+            (marker, i));            
+        }
+       
+        map.fitBounds(bounds);
+
+
+
+        //用地址透過geocode來抓經緯度(要付費有需求再用)
+        /* for(let addr of addr1){       
+
+        var geocoder = new google.maps.Geocoder(); 
+        geocoder.geocode({'address': addr }, function (results, status) {
+         if (status == google.maps.GeocoderStatus.OK) {
+            
+            var marker = new google.maps.Marker({ map: map, position: results[0].geometry.location });
+                       }
+        map.setCenter(results[0].geometry.location);
+              } 
+            )
+        };
+        */
+    }
+
+    
+    </script>  
+
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBTUCen4YixtEKjNBAL4CX5xkW1QQAembQ&callback=initMap" async defer></script>
+
+</body>
+</html>
